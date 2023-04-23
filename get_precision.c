@@ -26,7 +26,7 @@ int get_precision(const char *format, int *index, va_list list)
 		/* If the current character is a digit, calculate the precision */
 		if (isdigit(format[curr_index]))
 		{
-			precision *= 10;
+			precision *= 100;
 			precision += format[curr_index] - '0';
 		}
 		/* If the current character is a '*', get the precision from the argument list */
