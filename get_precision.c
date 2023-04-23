@@ -1,41 +1,47 @@
+#include <ctype.h>
 #include "main.h"
 
 /**
  * get_precision - Calculates the precision for printing
  * @format: Formatted string in which to print the arguments
- * @i: List of arguments to be printed.
+ * @index: List of arguments to be printed.
  * @list: list of arguments.
  *
  * Return: Precision.
  */
-int get_precision(const char *format, int *i, va_list list)
+int get_precision(const char *format, int *index, va_list list)
 {
-	int curr_i = *i + 1;
+	int curr_index = *index + 1;
 	int precision = -1;
 
-	if (format[curr_i] != '.')
+	/* Check if the current character is a '.' */
+	if (format[curr_index] != '.')
 		return (precision);
 
 	precision = 0;
 
-	for (curr_i += 1; format[curr_i] != '\0'; curr_i++)
+	/* Loop through the characters after the '.' */
+	for (curr_index += 1; format[curr_index] != '\0'; curr_index++)
 	{
-		if (is_digit(format[curr_i]))
+		/* If the current character is a digit, calculate the precision */
+		if (isdigit(format[curr_index]))
 		{
 			precision *= 10;
-			precision += format[curr_i] - '0';
+			precision += format[curr_index] - '0';
 		}
-		else if (format[curr_i] == '*')
+		/* If the current character is a '*', get the precision from the argument list */
+		else if (format[curr_index] == '*')
 		{
-			curr_i++;
+			curr_index++;
 			precision = va_arg(list, int);
 			break;
 		}
+		/* If the current character is not a digit or '*', stop processing */
 		else
 			break;
 	}
 
-	*i = curr_i - 1;
+	*index = curr_index - 1;
 
 	return (precision);
 }
